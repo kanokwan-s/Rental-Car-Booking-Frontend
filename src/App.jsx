@@ -14,6 +14,7 @@ import MyProfile from './pages/MyProfile'
 import ManageCars from './pages/ManageCars'
 import PrivateRoute from './components/PrivateRoute'
 import BookingDetails from './pages/BookingDetails'
+import ResetPassword from './pages/ResetPassword'
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                         <Route path='/login' element={<Login/>} />
                         <Route path='/register' element={<Register/>} />
                         <Route path='/forgot-password' element={<ForgotPassword/>} />
+                        <Route path='/reset-password/:resetToken' element={<ResetPassword />} />
                         <Route 
                             path='/book-car' 
                             element={
@@ -107,6 +109,10 @@ function App() {
 }
 
 export default App;
+
+
+
+
 
 
 

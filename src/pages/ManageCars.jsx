@@ -89,16 +89,30 @@ function ManageCars() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Validate required fields
+        if (!newCar.name || !newCar.provider || !newCar.type || !newCar.plateNumber || !newCar.price) {
+            toast.error('Please fill in all required fields');
+            return;
+        }
+
         setIsLoading(true);
 
         const carData = {
-            name: newCar.name,
+            name: newCar.name.trim(),
             provider: newCar.provider,
-            type: newCar.type,
-            plateNumber: newCar.plateNumber,
+            type: newCar.type.trim(),
+            plateNumber: newCar.plateNumber.trim(),
             pricePerDay: parseFloat(newCar.price) || 0,
             available: true
         };
+
+        // Validate price
+        if (isNaN(carData.pricePerDay) || carData.pricePerDay <= 0) {
+            toast.error('Please enter a valid price');
+            setIsLoading(false);
+            return;
+        }
 
         try {
             const response = await axios.post(
@@ -125,6 +139,7 @@ function ManageCars() {
                 fetchCars();
             }
         } catch (error) {
+            console.error('Error details:', error.response?.data);
             toast.error(error.response?.data?.message || 'Failed to add car');
         } finally {
             setIsLoading(false);

@@ -2,6 +2,7 @@ import { useState } from "react"
 import { toast } from "react-toastify"
 import { FaLock } from 'react-icons/fa'
 import { Link } from "react-router-dom"
+import axios from 'axios'
 
 function ForgotPassword() {
     const [email, setEmail] = useState('')
@@ -10,12 +11,14 @@ function ForgotPassword() {
         e.preventDefault()
 
         try {
-            // TODO: Implement password reset logic here
-            // This would typically involve calling your backend API
-            toast.success('Password reset link sent to your email')
-            setEmail('')
+            const response = await axios.post('http://localhost:5000/api/v1/auth/forgotpassword', { email });
+            
+            if (response.data.success) {
+                toast.success('Password reset link sent to your email');
+                setEmail('');
+            }
         } catch (error) {
-            toast.error('Failed to send reset link')
+            toast.error(error.response?.data?.message || 'Failed to send reset link');
         }
     }
 
@@ -58,3 +61,4 @@ function ForgotPassword() {
 }
 
 export default ForgotPassword
+
